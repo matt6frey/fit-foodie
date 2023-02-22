@@ -78,6 +78,13 @@ export default {
     },
     errorMessage: "",
   }),
+  computed: {
+    url() {
+      return this.type ==='food'
+        ? process.env.VUE_APP_NUTRITION_URL
+        : process.env.VUE_APP_FITNESS_URL
+    }
+  },
   methods: {
     async ask() {
       this.$emit("loading", true);
@@ -87,10 +94,15 @@ export default {
         this.errorMessage = "Please provide a question.";
         return;
       }
-      if (process.env.VUE_APP_ASK_URL && this.form.question) {
-        const { data } = await axios.post(process.env.VUE_APP_ASK_URL, {
-          question: this.form.question,
-        });
+      if (this.url && this.form.question) {
+        const headers = {
+          'Authorization': null,
+          'Content-Type': 'application/json'
+        }
+        const { data } = await axios.post(this.url, {
+          prompt: this.form.question,
+          key: process.env.VUE_APP_GCP_API
+        }, headers);
         if (!data) {
           console.error("Error retrieving answer...");
           this.errorMessage =
