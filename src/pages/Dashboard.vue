@@ -26,6 +26,47 @@
             </button>
           </div>
         </div>
+        <div v-if="questions.fitness.length || questions.nutrition.length">
+          <hr />
+          <div class="
+            bg-white
+            rounded-lg
+            shadow shadow-grey-300
+            p-4
+            "
+            v-for="(entry, qIndex) in questions.fitness"
+            :key="`fitness-${qIndex}`"
+          >
+            <p class="text-right">
+              <span>Fitness</span>
+            </p>
+            <p>
+              {{ entry.question }}
+            </p>
+            <p>
+              {{ entry.answer }}
+            </p>
+          </div>
+          <div class="
+            bg-white
+            rounded-lg
+            shadow shadow-grey-300
+            p-4
+            "
+            v-for="(entry, qIndex) in questions.nutrition"
+            :key="`nutrition-${qIndex}`"
+          >
+            <p class="text-right">
+              <span>Nutrition</span>
+            </p>
+            <p>
+              {{ entry.question }}
+            </p>
+            <p>
+              {{ entry.answer }}
+            </p>
+          </div>
+        </div>
       </template>
     </container>
 

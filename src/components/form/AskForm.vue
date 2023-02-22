@@ -65,7 +65,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: "food",
+      default: "Nutrition",
     },
     link: {
       type: String,
@@ -80,7 +80,7 @@ export default {
   }),
   computed: {
     url() {
-      return this.type ==='food'
+      return this.type ==='Nutrition'
         ? process.env.VUE_APP_NUTRITION_URL
         : process.env.VUE_APP_FITNESS_URL
     }
