@@ -26,7 +26,7 @@
             </button>
           </div>
         </div>
-        <div v-if="questions.fitness.length || questions.nutrition.length">
+        <div class="my-3" v-if="questions.fitness.length || questions.nutrition.length">
           <hr />
           <div class="
             bg-white

@@ -111,7 +111,7 @@ export default {
         this.$emit("storeAnswer", {
           payload: {
             question: this.question,
-            answer: data.answer,
+            answer: data.choices[0].text,
           },
         });
         return;
