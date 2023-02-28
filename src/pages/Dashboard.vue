@@ -26,14 +26,13 @@
             </button>
           </div>
         </div>
-        <div class="my-3" v-if="questions.fitness.length || questions.nutrition.length">
+        <div
+          class="my-3"
+          v-if="questions.fitness.length || questions.nutrition.length"
+        >
           <hr />
-          <div class="
-            bg-white
-            rounded-lg
-            shadow shadow-grey-300
-            p-4
-            "
+          <div
+            class="bg-white rounded-lg shadow shadow-grey-300 p-4"
             v-for="(entry, qIndex) in questions.fitness"
             :key="`fitness-${qIndex}`"
           >
@@ -47,12 +46,8 @@
               {{ entry.answer }}
             </p>
           </div>
-          <div class="
-            bg-white
-            rounded-lg
-            shadow shadow-grey-300
-            p-4
-            "
+          <div
+            class="bg-white rounded-lg shadow shadow-grey-300 p-4"
             v-for="(entry, qIndex) in questions.nutrition"
             :key="`nutrition-${qIndex}`"
           >
@@ -84,17 +79,7 @@
     <!-- Loading -->
     <Transition>
       <div
-        class="
-          absolute
-          bg-black/60
-          top-0
-          left-0
-          w-full
-          h-screen
-          flex
-          justify-center
-          place-items-center
-        "
+        class="absolute bg-black/60 top-0 left-0 w-full h-screen flex justify-center place-items-center"
         v-if="showLoading"
       >
         <p class="animate-pulse text-white text-2xl text-shadow-md">
@@ -135,6 +120,7 @@ export default {
       this.showAskForm = true;
     },
     storeAnswer(payload) {
+      console.log("storeAnswer Dash", payload);
       this.questions[this.type.toLowerCase()].push({
         question: payload.question,
         answer: payload.answer,

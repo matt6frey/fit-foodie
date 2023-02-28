@@ -1,16 +1,7 @@
 <template>
   <div class="absolute bg-black/40 top-0 left-0 w-full h-screen">
     <div
-      class="
-        mx-auto
-        mt-20
-        w-5/6
-        md:w-3/4
-        bg-white
-        rounded-lg
-        shadow shadow-grey-300
-        p-4
-      "
+      class="mx-auto mt-20 w-5/6 md:w-3/4 bg-white rounded-lg shadow shadow-grey-300 p-4"
     >
       <h3 class="text-center text-2xl mt-3 mb-5">Get {{ this.type }} Advice</h3>
       <p class="font-bold mb-3">Ask your question below:</p>
@@ -21,14 +12,7 @@
           id=""
           cols="30"
           rows="10"
-          class="
-            bg-slate-100
-            w-full
-            border border-bottom-2
-            rounded-lg
-            focus:outline focus:outline-sky-500
-            p-4
-          "
+          class="bg-slate-100 w-full border border-bottom-2 rounded-lg focus:outline focus:outline-sky-500 p-4"
         ></textarea>
         <Transition>
           <small v-if="!form.question && errorMessage" class="text-red-500">
@@ -80,10 +64,10 @@ export default {
   }),
   computed: {
     url() {
-      return this.type ==='Nutrition'
+      return this.type === "Nutrition"
         ? process.env.VUE_APP_NUTRITION_URL
-        : process.env.VUE_APP_FITNESS_URL
-    }
+        : process.env.VUE_APP_FITNESS_URL;
+    },
   },
   methods: {
     async ask() {
@@ -96,25 +80,33 @@ export default {
       }
       if (this.url && this.form.question) {
         const headers = {
-          'Authorization': null,
-          'Content-Type': 'application/json'
-        }
-        const { data } = await axios.post(this.url, {
-          prompt: this.form.question,
-          key: process.env.VUE_APP_GCP_API
-        }, headers);
+          Authorization: null,
+          "Content-Type": "application/json",
+        };
+        const { data } = await axios.post(
+          this.url,
+          {
+            prompt: this.form.question,
+            api_key: process.env.VUE_APP_GCP_API,
+          },
+          headers
+        );
+
         if (!data) {
           console.error("Error retrieving answer...");
           this.errorMessage =
             "Oops! There was an error. Try rephrasing your question";
+          this.$emit("loading", false);
+          return;
+        } else {
+          this.$emit("storeAnswer", {
+            payload: {
+              question: this.form.question,
+              answer: data.choices[0].text,
+            },
+          });
+          return;
         }
-        this.$emit("storeAnswer", {
-          payload: {
-            question: this.question,
-            answer: data.choices[0].text,
-          },
-        });
-        return;
       }
       if (this.form.question) {
         setTimeout(() => {
