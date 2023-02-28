@@ -32,33 +32,47 @@
         >
           <hr />
           <div
-            class="bg-white rounded-lg shadow shadow-grey-300 p-4"
+            class="bg-white rounded-lg shadow-md shadow-grey-300 p-4 my-3"
             v-for="(entry, qIndex) in questions.fitness"
             :key="`fitness-${qIndex}`"
           >
-            <p class="text-right">
-              <span>Fitness</span>
-            </p>
             <p>
-              {{ entry.question }}
+              <span
+                class="font-bold uppercase py-3 px-2 text-white rounded-md bg-sky-500"
+                >Fitness</span
+              >
             </p>
-            <p>
-              {{ entry.answer }}
+            <p class="my-5 font-bold">
+              {{ titleCase(entry.question) }}
+            </p>
+            <p
+              v-for="(answer, aIndex) in entry.answer.split('\n\n')"
+              :key="`answer-part-fitness-${aIndex}`"
+              class="py-2"
+            >
+              {{ answer }}
             </p>
           </div>
           <div
-            class="bg-white rounded-lg shadow shadow-grey-300 p-4"
+            class="bg-white rounded-lg shadow-md shadow-grey-300 p-4 my-3"
             v-for="(entry, qIndex) in questions.nutrition"
             :key="`nutrition-${qIndex}`"
           >
-            <p class="text-right">
-              <span>Nutrition</span>
-            </p>
             <p>
-              {{ entry.question }}
+              <span
+                class="font-bold uppercase py-3 px-2 text-white rounded-md bg-green-500"
+                >Nutrition</span
+              >
             </p>
-            <p>
-              {{ entry.answer }}
+            <p class="my-5 font-bold">
+              {{ titleCase(entry.question) }}
+            </p>
+            <p
+              v-for="(answer, aIndex) in entry.answer.split('\n\n')"
+              :key="`answer-part-nutrition-${aIndex}`"
+              class="py-2"
+            >
+              {{ answer }}
             </p>
           </div>
         </div>
@@ -119,20 +133,31 @@ export default {
       this.type = type;
       this.showAskForm = true;
     },
-    storeAnswer(payload) {
-      console.log("storeAnswer Dash", payload);
-      this.questions[this.type.toLowerCase()].push({
-        question: payload.question,
-        answer: payload.answer,
-      });
-      this.resetForm();
+    storeAnswer({ payload }) {
+      console.log(
+        "storeAnswer Dash",
+        payload,
+        payload.question,
+        payload.answer
+      );
+      this.questions[this.type.toLowerCase()] = [
+        ...this.questions[this.type.toLowerCase()],
+        {
+          question: payload.question + "?",
+          answer: payload.answer.replace(/(\?+\n\n)/, ""),
+        },
+      ];
       this.loading(false);
+      setTimeout(() => this.resetForm(), 250);
     },
     loading(value) {
       this.showLoading = value;
     },
     resetForm() {
       (this.type = ""), (this.showAskForm = false);
+    },
+    titleCase(str) {
+      return str.toLowerCase().replace(/\b\w/g, (s) => s.toUpperCase());
     },
   },
   computed: {
